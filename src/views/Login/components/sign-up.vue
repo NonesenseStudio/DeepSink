@@ -39,7 +39,7 @@ const onRegister = () => {
   <n-form ref="formRef" :model="userInfo" :rules="rules">
     <n-form-item path="account">
       <n-input
-        v-model:value="userInfo.account"
+        v-model:value="userInfo.username"
         @keydown.enter.prevent
         :placeholder="t('sign_in.account_placeholder')"
       >

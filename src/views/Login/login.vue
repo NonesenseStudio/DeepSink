@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import SignIn from "@/views/Login/components/sign-in.vue";
 import SignUp from "@/views/Login/components/sign-up.vue";
 
-const { t } = useI18n();
 const route = useRoute();
 console.log(route);
 </script>
