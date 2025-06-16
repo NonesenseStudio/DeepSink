@@ -9,7 +9,7 @@ const userInfo = reactive({
   password: "",
 });
 const rules = {
-  account: [
+  username: [
     {
       required: true,
       message: "请输入账号",
@@ -37,7 +37,7 @@ const onRegister = () => {
 
 <template>
   <n-form ref="formRef" :model="userInfo" :rules="rules">
-    <n-form-item path="account">
+    <n-form-item path="username">
       <n-input
         v-model:value="userInfo.username"
         @keydown.enter.prevent
