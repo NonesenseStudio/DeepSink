@@ -1,0 +1,46 @@
+/* 全局样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 设置基础字体大小 */
+html {
+  font-size: 16px; /* 通常以16px为基准 */
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+  color: #333;
+  font-family:
+    "Sarasa UI", "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  &.dark {
+    background: #292a2d;
+    color: #fff;
+  }
+}
+
+body {
+  line-height: 1.6; /* 设置行高 */
+  width: 100%;
+  height: 100%;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+@font-face {
+  font-family: "Sarasa UI";
+  src: url("./assets/fonts/SarasaUiSC-Regular.ttf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
