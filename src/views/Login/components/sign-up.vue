@@ -2,6 +2,7 @@
 import { LockOutlined, PersonOutlined } from "@vicons/material";
 import { useI18n } from "vue-i18n";
 import { userRegister } from "@/services/user.ts";
+import { message as Message } from "@/utils";
 
 const { t } = useI18n();
 const userInfo = reactive({
@@ -29,8 +30,12 @@ const onLogin = () => {
   router.replace("/login");
 };
 const onRegister = () => {
-  userRegister(userInfo).then((res) => {
-    console.log(res);
+  if (!userInfo.username || !userInfo.password) {
+    Message.info("请输入用户名和密码");
+    return;
+  }
+  userRegister(userInfo).then(() => {
+    Message.success("注册成功");
   });
 };
 </script>

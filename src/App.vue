@@ -14,9 +14,7 @@ const route = useRoute();
 function getLayout(name: string) {
   if (layouts.get(name)) return layouts.get(name);
   const layout = markRaw(
-      defineAsyncComponent(
-          () => import(`@/layouts/${name}/index.vue`),
-      ),
+    defineAsyncComponent(() => import(`@/layouts/${name}/index.vue`)),
   );
   layouts.set(name, layout);
   return layout;

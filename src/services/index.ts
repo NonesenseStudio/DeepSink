@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useMessage as Message } from "naive-ui";
+import { notification } from "@/utils";
 
 const axiosInstance = axios.create({
   baseURL: "/api",
@@ -36,7 +36,10 @@ const instance = {
       });
       return response.data;
     } catch (error: any) {
-      Message().error(error.message);
+      notification.error({
+        content: error.message,
+        duration: 3000,
+      });
       console.error(
         `Error with ${method.toUpperCase()} request to ${url}:`,
         error,
