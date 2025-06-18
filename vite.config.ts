@@ -39,11 +39,10 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       proxy: {
-        [env.VITE_API_BASE_URL]: {
+        "/api": {
           target: env.VITE_API_TARGET_URL, // 目标地址
           changeOrigin: true, // 修改请求源（解决跨域）
-          rewrite: (path) =>
-            path.replace(new RegExp(`^${env.VITE_API_BASE_URL}`), ""), // 移除接口前缀
+          rewrite: (path) => path.replace(/^\/api/, ""),
         },
       },
     },
