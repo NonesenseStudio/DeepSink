@@ -1,8 +1,13 @@
 import axios from "axios";
 import { notification } from "@/utils";
 
+const mode = import.meta.env.MODE;
+const baseUrl =
+  mode === "development"
+    ? import.meta.env.BASE_URL
+    : import.meta.env.VITE_TARGET_URL;
 const axiosInstance = axios.create({
-  baseURL: "/api",
+  baseURL: baseUrl,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json;charset=UTF-8",
