@@ -3,7 +3,6 @@ import SignIn from "@/views/Login/components/sign-in.vue";
 import SignUp from "@/views/Login/components/sign-up.vue";
 
 const route = useRoute();
-console.log(route);
 </script>
 
 <template>

@@ -37,7 +37,7 @@ const instance = {
       return response.data;
     } catch (error: any) {
       notification.error({
-        content: error.message,
+        content: error.response.data.error || "未知错误",
         duration: 3000,
       });
       console.error(
@@ -47,7 +47,7 @@ const instance = {
       throw error;
     }
   },
-  get: (url: string, options: any) => instance.request("get", url, options),
+  get: (url: string, options?: any) => instance.request("get", url, options),
   post: (url: string, data: any, options: any = null) =>
     instance.request("post", url, { data, ...options }),
   put: (url: string, data: any, options: any) =>
