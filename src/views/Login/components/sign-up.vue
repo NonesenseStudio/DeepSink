@@ -5,6 +5,7 @@ import { userRegister } from "@/services/user.ts";
 import { message as Message } from "@/utils";
 
 const { t } = useI18n();
+const loading = ref<boolean>(false);
 const userInfo = reactive({
   username: "",
   password: "",
@@ -30,13 +31,19 @@ const onLogin = () => {
   router.replace("/login");
 };
 const onRegister = () => {
+  loading.value = true;
   if (!userInfo.username || !userInfo.password) {
     Message.info("请输入用户名和密码");
+    loading.value = false;
     return;
   }
-  userRegister(userInfo).then(() => {
-    Message.success("注册成功");
-  });
+  userRegister(userInfo)
+    .then(() => {
+      Message.success("注册成功");
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 </script>
 
@@ -66,7 +73,13 @@ const onRegister = () => {
       </n-input>
     </n-form-item>
     <n-form-item>
-      <n-button type="primary" block :loading="false" @click="onRegister">
+      <n-button
+        type="primary"
+        block
+        :loading="loading"
+        @click="onRegister"
+        attr-type="submit"
+      >
         {{ t("sign_in.signup") }}
       </n-button>
     </n-form-item>
