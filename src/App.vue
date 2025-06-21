@@ -11,6 +11,7 @@ const themeOverrides: GlobalThemeOverrides = {
 
 const layouts = new Map();
 const route = useRoute();
+
 function getLayout(name: string) {
   if (layouts.get(name)) return layouts.get(name);
   const layout = markRaw(
@@ -19,6 +20,7 @@ function getLayout(name: string) {
   layouts.set(name, layout);
   return layout;
 }
+
 const Layout = computed(() => {
   if (!route.matched?.length) return null;
   return getLayout(route.meta?.layout as string);
@@ -30,6 +32,7 @@ const Layout = computed(() => {
     :theme="isDark ? darkTheme : null"
     :theme-overrides="themeOverrides"
   >
+    <n-global-style />
     <router-view v-if="Layout" v-slot="{ Component, route: curRoute }">
       <component :is="Layout">
         <KeepAlive :include="[]">

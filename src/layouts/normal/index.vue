@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import {
-  KeyboardArrowLeftOutlined,
-  KeyboardArrowRightOutlined,
-  PostAddRound,
-} from "@vicons/material";
+import { ViewSidebarOutlined } from "@vicons/material";
+import Sider from "@/layouts/normal/components/sider.vue";
 const collapsed = ref(false);
 </script>
 
@@ -12,26 +9,23 @@ const collapsed = ref(false);
     <n-layout-sider
       :collapsed="collapsed"
       collapse-mode="width"
-      :collapsed-width="120"
+      :collapsed-width="0"
       :width="240"
-      content-style="padding: 24px;"
+      content-style="padding: 10px;"
       bordered
     >
-      <n-button @click="collapsed = !collapsed" text>
-        <template #icon>
-          <n-icon>
-            <KeyboardArrowRightOutlined v-if="collapsed" />
-            <KeyboardArrowLeftOutlined v-else />
-          </n-icon>
-        </template>
-      </n-button>
-      <n-button round color="#dbeafe" text-color="#4d6bfe">
-        <n-icon><PostAddRound /> </n-icon>开启新对话
-      </n-button>
+      <sider v-model:collapsed="collapsed"></sider>
     </n-layout-sider>
-    <n-layout-content content-style="padding: 24px;">
-      <slot></slot>
-    </n-layout-content>
+    <n-layout content-class="n-layout-right">
+      <n-layout-header bordered>
+        <n-button @click="collapsed = !collapsed" text v-if="collapsed">
+          <template #icon>
+            <ViewSidebarOutlined />
+          </template>
+        </n-button>
+      </n-layout-header>
+      <n-layout-content> <slot></slot></n-layout-content>
+    </n-layout>
   </n-layout>
 </template>
 
@@ -40,5 +34,18 @@ const collapsed = ref(false);
   width: 100%;
   height: 100%;
   overflow: hidden;
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 5%;
+  }
+  &-content {
+    height: 95%;
+    overflow: hidden;
+  }
+  :deep(.n-layout-right) {
+    overflow: hidden;
+  }
 }
 </style>

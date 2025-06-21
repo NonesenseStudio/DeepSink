@@ -3,12 +3,13 @@ import {
   createWebHistory,
   type RouteRecordRaw,
 } from "vue-router";
+import { checkTokenGuard } from "@/router/guard.ts";
 
 export const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "Home",
-    component: () => import("@/views/Login/login.vue"),
+    redirect: "/chat",
     meta: {
       layout: "empty",
     },
@@ -30,7 +31,7 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/Chat",
+    path: "/chat",
     name: "Chat",
     meta: {
       layout: "normal",
@@ -43,8 +44,20 @@ export const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: () => import("@/views/Error/404.vue"),
+    meta: {
+      layout: "empty",
+    },
+  },
 ];
-export const router = createRouter({
+const router = createRouter({
   history: createWebHistory("/"),
   routes,
 });
+
+router.beforeEach(checkTokenGuard);
+
+export default router;

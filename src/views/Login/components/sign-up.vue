@@ -10,6 +10,7 @@ const userInfo = reactive({
   username: "",
   password: "",
 });
+const agreed = ref<boolean>(false);
 const rules = {
   username: [
     {
@@ -73,6 +74,14 @@ const onRegister = () => {
       </n-input>
     </n-form-item>
     <n-form-item>
+      <n-checkbox v-model:checked="agreed">
+        已阅读并同意我们的
+        <a href="/terms.html" target="_blank">用户协议</a>
+        与
+        <a href="/privacy.html" target="_blank">隐私政策</a>
+      </n-checkbox>
+    </n-form-item>
+    <n-form-item>
       <n-button
         type="primary"
         block
@@ -87,4 +96,11 @@ const onRegister = () => {
   </n-form>
 </template>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+a {
+  color: #409eff;
+  text-decoration: underline;
+  cursor: pointer;
+  user-select: auto;
+}
+</style>

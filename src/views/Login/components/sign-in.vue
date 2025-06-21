@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { LockOutlined, PersonOutlined } from "@vicons/material";
 import { useI18n } from "vue-i18n";
+import { message as Message, loadingBar } from "@/utils";
+import { userLogin } from "@/services/user.ts";
+import { useUserStore } from "@/store";
 
 const { t } = useI18n();
+const loading = ref<boolean>(false);
+const userStore = useUserStore();
 const userInfo = reactive({
-  account: "",
+  username: "",
   password: "",
 });
 const rules = {
-  account: [
+  username: [
     {
       required: true,
       message: "请输入账号",
@@ -27,13 +32,41 @@ const router = useRouter();
 const onRegister = () => {
   router.replace("/register");
 };
+const onLogin = () => {
+  loading.value = true;
+  if (!userInfo.username || !userInfo.password) {
+    loading.value = false;
+    Message.error("请输用户名和密码");
+    return;
+  }
+  loadingBar.start();
+  userLogin(userInfo)
+    .then((res) => {
+      userStore.setUserInfo({
+        username: userInfo.username,
+        token: res.token,
+      });
+      localStorage.setItem("token", res.token);
+      setTimeout(() => {
+        Message.success("登录成功");
+        loadingBar.finish();
+        router.replace("/chat");
+      }, 3000);
+    })
+    .catch(() => {
+      loadingBar.error();
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+};
 </script>
 
 <template>
   <n-form ref="formRef" :model="userInfo" :rules="rules">
-    <n-form-item path="account">
+    <n-form-item path="username">
       <n-input
-        v-model:value="userInfo.account"
+        v-model:value="userInfo.username"
         @keydown.enter.prevent
         :placeholder="t('sign_in.account_placeholder')"
       >
@@ -55,7 +88,7 @@ const onRegister = () => {
       </n-input>
     </n-form-item>
     <n-form-item>
-      <n-button type="primary" block :loading="false">
+      <n-button type="primary" block :loading="loading" @click="onLogin">
         {{ t("sign_in.sign_in") }}
       </n-button>
     </n-form-item>

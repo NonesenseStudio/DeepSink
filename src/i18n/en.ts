@@ -3,7 +3,7 @@ export default {
   chat: {
     language: "Language",
     modalTitle: "System Settings",
-    placeholder: "Message DeepSeek",
+    placeholder: "What can I do for you?",
     systemPrompt: "You are a helpful assistant.",
     messagePopover: "Message is empty",
     greeting: "Hi, I'm DeepSeek.",
@@ -17,6 +17,17 @@ export default {
     remember: "Remember me",
     forgot: "Forgot password?",
     register: "Sign up",
-    login:'Sign in'
+    login: "Sign in",
+  },
+  error: {
+    404: "Page not found",
+    toIndex: "Go to home page",
+  },
+  dropdown: {
+    logout: "Logout",
+    logout_content: "Do you really want to logout?",
+    logout_ok: "OK",
+    logout_cancel: "Cancel",
+    settings: "Settings",
   },
 };
