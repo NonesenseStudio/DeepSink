@@ -29,4 +29,19 @@ export default {
     logout_cancel: "取消",
     settings: "设置",
   },
+  settings: {
+    title: "设置",
+    language: "语言",
+    theme: {
+      title: "主题",
+      dark: "暗黑模式",
+      light: "浅色模式",
+    },
+    system: "跟随系统",
+    save: "保存",
+    cancel: "取消",
+    basic_settings: "基础设置",
+    advanced_settings: "高级设置",
+    system_settings: "系统设置",
+  },
 };

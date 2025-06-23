@@ -45,6 +45,15 @@ export const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
+    path: "/settings",
+    name: "Settings",
+    component: () => import("@/views/Settings/settings.vue"),
+    meta: {
+      layout: "normal",
+      title: "settings.title",
+    },
+  },
+  {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
     component: () => import("@/views/Error/404.vue"),

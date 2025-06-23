@@ -8,6 +8,7 @@ export default {
     messagePopover: "Message is empty",
     greeting: "Hi, I'm DeepSeek.",
     notice: "AI-generated, for reference only",
+    submitPopup: "",
   },
   sign_in: {
     title: "Sign In",
@@ -29,5 +30,21 @@ export default {
     logout_ok: "OK",
     logout_cancel: "Cancel",
     settings: "Settings",
+  },
+  settings: {
+    title: "Settings",
+    language: "Language",
+    theme: {
+      title: "Theme",
+      dark: "Dark",
+      light: "Light",
+    },
+    system: "System",
+    system_prompt: "System Prompt",
+    save: "Save",
+    cancel: "Cancel",
+    basic_settings: "Basic Settings",
+    advanced_settings: "Advanced Settings",
+    system_settings: "System Settings",
   },
 };

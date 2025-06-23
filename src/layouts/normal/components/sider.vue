@@ -17,38 +17,45 @@ defineProps<{
   collapsed: boolean;
 }>();
 const emits = defineEmits(["update:collapsed"]);
-const options = [
-  {
-    label: t("dropdown.settings"),
-    key: "settings",
-    icon: renderIcon(SettingsOutlined),
-  },
-  {
-    type: "divider",
-    key: "d1",
-  },
-  {
-    label: t("dropdown.logout"),
-    key: "logout",
-    icon: renderIcon(LogOutFilled),
-    props: {
-      onClick: () => {
-        dialog.warning({
-          content: t("dropdown.logout_content"),
-          positiveText: t("dropdown.logout_ok"),
-          negativeText: t("dropdown.logout_cancel"),
-          draggable: true,
-          onPositiveClick: () => {
-            localStorage.removeItem("token");
-            useStore.userInfo.token = "";
-            router.push("/login");
-            Message.success("账号已退出");
-          },
-        });
+const options = computed(() => {
+  return [
+    {
+      label: t("dropdown.settings"),
+      key: "settings",
+      icon: renderIcon(SettingsOutlined),
+      props: {
+        onClick: () => {
+          router.push("/settings");
+        },
       },
     },
-  },
-];
+    {
+      type: "divider",
+      key: "d1",
+    },
+    {
+      label: t("dropdown.logout"),
+      key: "logout",
+      icon: renderIcon(LogOutFilled),
+      props: {
+        onClick: () => {
+          dialog.warning({
+            content: t("dropdown.logout_content"),
+            positiveText: t("dropdown.logout_ok"),
+            negativeText: t("dropdown.logout_cancel"),
+            draggable: true,
+            onPositiveClick: () => {
+              localStorage.removeItem("token");
+              useStore.userInfo.token = "";
+              router.push("/login");
+              Message.success("账号已退出");
+            },
+          });
+        },
+      },
+    },
+  ];
+});
 </script>
 
 <template>
@@ -61,13 +68,18 @@ const options = [
           </n-icon>
         </template>
       </n-button>
-      <n-button round color="#dbeafe" text-color="#4d6bfe">
+      <n-button
+        round
+        color="#dbeafe"
+        text-color="#4d6bfe"
+        @click="router.push('/chat')"
+      >
         <n-icon><PostAddRound /> </n-icon>开启新对话
       </n-button>
     </div>
     <div class="sider-middle"></div>
     <div class="sider-bottom">
-      <n-dropdown trigger="click" :options="options">
+      <n-dropdown trigger="click" :options="options" width="trigger">
         <n-button>点击！</n-button>
       </n-dropdown>
     </div>

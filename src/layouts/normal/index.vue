@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { ViewSidebarOutlined } from "@vicons/material";
 import Sider from "@/layouts/normal/components/sider.vue";
+import { useI18n } from "vue-i18n";
+
 const collapsed = ref(false);
+const { t } = useI18n();
+const route = useRoute();
 </script>
 
 <template>
@@ -18,11 +22,21 @@ const collapsed = ref(false);
     </n-layout-sider>
     <n-layout content-class="n-layout-right">
       <n-layout-header bordered>
-        <n-button @click="collapsed = !collapsed" text v-if="collapsed">
-          <template #icon>
-            <ViewSidebarOutlined />
-          </template>
-        </n-button>
+        <n-grid x-gap="12" :cols="3">
+          <n-gi>
+            <n-button @click="collapsed = !collapsed" text v-if="collapsed">
+              <template #icon>
+                <ViewSidebarOutlined />
+              </template>
+            </n-button>
+          </n-gi>
+          <n-gi>
+            <div style="text-align: center">
+              {{ route.meta?.title ? t(route.meta?.title as string) : "" }}
+            </div>
+          </n-gi>
+          <n-gi> </n-gi>
+        </n-grid>
       </n-layout-header>
       <n-layout-content> <slot></slot></n-layout-content>
     </n-layout>

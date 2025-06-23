@@ -5,7 +5,6 @@ const currentLanguage = navigator.language;
 export const i18n = createI18n({
   legacy: false,
   locale: currentLanguage,
-  fallbackLocale: "en",
   messages: {
     en,
     zh,
@@ -44,3 +43,5 @@ export const i18n = createI18n({
     },
   },
 });
+
+export default i18n;

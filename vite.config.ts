@@ -11,18 +11,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       AutoImport({
-        imports: [
-          "vue",
-          "vue-router",
-          {
-            "naive-ui": [
-              "useDialog",
-              "useMessage",
-              "useNotification",
-              "useLoadingBar",
-            ],
-          },
-        ],
+        imports: ["vue", "vue-router"],
         dts: "src/auto-imports.d.ts",
         resolvers: [NaiveUiResolver()],
       }),

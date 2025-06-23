@@ -1,8 +1,18 @@
 <script setup lang="ts">
-import { useDark } from "@vueuse/core";
+import { useDark, useToggle, usePreferredColorScheme } from "@vueuse/core";
 import { darkTheme, type GlobalThemeOverrides } from "naive-ui";
+import { useSettingsStore } from "@/store";
+import { zhCN, enUS, dateZhCN, dateEnUS } from "naive-ui";
 
-const isDark = useDark();
+const isDark = useDark({
+  selector: "html",
+  attribute: "class",
+  valueDark: "dark",
+  valueLight: "light",
+});
+const toggle = useToggle(isDark);
+const preferredColor = usePreferredColorScheme();
+const settingsStore = useSettingsStore();
 const themeOverrides: GlobalThemeOverrides = {
   common: {
     primaryColor: "#4d6bfe",
@@ -25,12 +35,32 @@ const Layout = computed(() => {
   if (!route.matched?.length) return null;
   return getLayout(route.meta?.layout as string);
 });
+const setTheme = computed(() => {
+  let isDarkMode: boolean;
+  if (settingsStore.theme === "system") {
+    isDarkMode = preferredColor.value === "dark";
+  } else {
+    isDarkMode = settingsStore.theme === "dark";
+  }
+  toggle(isDarkMode);
+  return isDarkMode ? darkTheme : null;
+});
+const setLanguage = computed(() => {
+  if (settingsStore.language.includes("zh")) {
+    return { locale: zhCN, dateLocale: dateZhCN };
+  } else if (settingsStore.language.includes("en")) {
+    return { locale: enUS, dateLocale: dateEnUS };
+  }
+  return { locale: zhCN, dateLocale: dateZhCN };
+});
 </script>
 
 <template>
   <n-config-provider
-    :theme="isDark ? darkTheme : null"
+    :theme="setTheme"
     :theme-overrides="themeOverrides"
+    :locale="setLanguage.locale"
+    :date-locale="setLanguage.dateLocale"
   >
     <n-global-style />
     <router-view v-if="Layout" v-slot="{ Component, route: curRoute }">
