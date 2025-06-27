@@ -29,8 +29,8 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         "/api": {
-          target: env.VITE_TARGET_URL, // 目标地址
-          changeOrigin: true, // 修改请求源（解决跨域）
+          target: env.VITE_TARGET_URL,
+          changeOrigin: true,
           secure: false,
           rewrite: (path) => path.replace(/^\/api/, ""),
         },

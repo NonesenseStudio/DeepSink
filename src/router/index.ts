@@ -36,13 +36,8 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: "normal",
     },
-    children: [
-      {
-        path: "",
-        name: "ChatIndex",
-        component: () => import("@/views/Chat/chat.vue"),
-      },
-    ],
+    component: () => import("@/views/Chat/chat.vue"),
+    children: [],
   },
   {
     path: "/settings",
@@ -50,7 +45,6 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/Settings/settings.vue"),
     meta: {
       layout: "normal",
-      title: "settings.title",
     },
   },
   {

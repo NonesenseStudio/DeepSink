@@ -9,6 +9,7 @@ import { renderIcon } from "@/utils";
 import { useI18n } from "vue-i18n";
 import { useUserStore } from "@/store";
 import { dialog, message as Message } from "@/utils";
+import { userLogout } from "@/services/user.ts";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -45,10 +46,14 @@ const options = computed(() => {
             negativeText: t("dropdown.logout_cancel"),
             draggable: true,
             onPositiveClick: () => {
-              localStorage.removeItem("token");
-              useStore.userInfo.token = "";
-              router.push("/login");
-              Message.success("账号已退出");
+              userLogout(useStore.userInfo.refresh_token).then(() => {
+                localStorage.removeItem("access_token");
+                localStorage.removeItem("refresh_token");
+                useStore.userInfo.access_token = "";
+                useStore.userInfo.refresh_token = "";
+                router.push("/login");
+                Message.success("账号已退出");
+              });
             },
           });
         },

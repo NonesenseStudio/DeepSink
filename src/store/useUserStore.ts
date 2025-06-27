@@ -3,14 +3,16 @@ import { defineStore } from "pinia";
 type UserStore = {
   userInfo: {
     username: string;
-    token: string;
+    access_token: string;
+    refresh_token: string;
   };
 };
 export const useUserStore = defineStore("user", {
   state: (): UserStore => ({
     userInfo: {
       username: "",
-      token: "",
+      access_token: "",
+      refresh_token: "",
     },
   }),
   actions: {

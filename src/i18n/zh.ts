@@ -1,5 +1,11 @@
 export default {
   hello: "你好，世界",
+  operation: "操作",
+  created_time: "创建时间",
+  add: "添加",
+  edit: "编辑",
+  delete: "删除",
+  model: "模型",
   chat: {
     language: "语言",
     modalTitle: "系统设置",
@@ -17,6 +23,7 @@ export default {
     forgot: "忘记密码",
     register: "立即注册",
     login: "返回登录",
+    expired: "登录已过期，请重新登录",
   },
   error: {
     404: "页面不存在",

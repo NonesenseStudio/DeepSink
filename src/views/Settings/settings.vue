@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { KeyboardArrowRightFilled, ArrowBackFilled } from "@vicons/material";
+import { ArrowBackFilled, KeyboardArrowRightFilled } from "@vicons/material";
 import { useI18n } from "vue-i18n";
 import { useSettingsStore } from "@/store";
 import { toggleTheme } from "@/utils";
+import Models from "@/views/Settings/components/models.vue";
 
 const { t, locale } = useI18n({ useScope: "global" });
 const showDrawer = ref(false);
@@ -19,12 +20,12 @@ const languages = [
 ];
 const themes = [
   {
-    value: "dark",
-    label: t("settings.theme.dark"),
-  },
-  {
     value: "light",
     label: t("settings.theme.light"),
+  },
+  {
+    value: "dark",
+    label: t("settings.theme.dark"),
   },
   {
     value: "system",
@@ -43,6 +44,7 @@ const changeLanguage = (value: string) => {
 <template>
   <div class="settings">
     <n-space vertical size="large">
+      <h2 style="text-align: center">{{ t("settings.title") }}</h2>
       <n-card :title="t('settings.basic_settings')">
         <n-list>
           <n-list-item>
@@ -104,7 +106,7 @@ const changeLanguage = (value: string) => {
       :trap-focus="false"
       :block-scroll="false"
     >
-      <n-drawer-content>
+      <n-drawer-content body-style="border-radius: 0">
         <template #header>
           <n-button text @click="showDrawer = false">
             <template #icon>
@@ -112,7 +114,7 @@ const changeLanguage = (value: string) => {
             </template>
           </n-button>
         </template>
-        《斯通纳》是美国作家约翰·威廉姆斯在 1965 年出版的小说。
+        <models></models>
       </n-drawer-content>
     </n-drawer>
   </div>

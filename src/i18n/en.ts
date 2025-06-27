@@ -1,5 +1,11 @@
 export default {
   hello: "Hello world",
+  operation: "Operation",
+  created_time: "Created Time",
+  add: "Add",
+  edit: "Edit",
+  delete: "Delete",
+  model: "Model",
   chat: {
     language: "Language",
     modalTitle: "System Settings",
@@ -19,6 +25,7 @@ export default {
     forgot: "Forgot password?",
     register: "Sign up",
     login: "Sign in",
+    expired: "Your session has expired, please login again",
   },
   error: {
     404: "Page not found",

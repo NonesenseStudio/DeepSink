@@ -3,7 +3,12 @@ import { useDark, useToggle, usePreferredColorScheme } from "@vueuse/core";
 import { darkTheme, type GlobalThemeOverrides } from "naive-ui";
 import { useSettingsStore } from "@/store";
 import { zhCN, enUS, dateZhCN, dateEnUS } from "naive-ui";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
 const isDark = useDark({
   selector: "html",
   attribute: "class",

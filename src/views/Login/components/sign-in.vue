@@ -4,6 +4,7 @@ import { useI18n } from "vue-i18n";
 import { message as Message, loadingBar } from "@/utils";
 import { userLogin } from "@/services/user.ts";
 import { useUserStore } from "@/store";
+import dayjs from "dayjs";
 
 const { t } = useI18n();
 const loading = ref<boolean>(false);
@@ -44,13 +45,16 @@ const onLogin = () => {
     .then((res) => {
       userStore.setUserInfo({
         username: userInfo.username,
-        token: res.token,
+        access_token: res.access_token,
+        refresh_token: res.refresh_token,
       });
-      localStorage.setItem("token", res.token);
+      localStorage.setItem("access_token", res.access_token);
+      localStorage.setItem("refresh_token", res.refresh_token);
+      localStorage.setItem("expired_date", dayjs().add(7, "day").valueOf());
       setTimeout(() => {
+        router.replace("/chat");
         Message.success("登录成功");
         loadingBar.finish();
-        router.replace("/chat");
       }, 3000);
     })
     .catch(() => {

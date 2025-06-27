@@ -21,7 +21,7 @@ const route = useRoute();
       <sider v-model:collapsed="collapsed"></sider>
     </n-layout-sider>
     <n-layout content-class="n-layout-right">
-      <n-layout-header bordered>
+      <n-layout-header bordered v-if="route.path.includes('chat')">
         <n-grid x-gap="12" :cols="3">
           <n-gi>
             <n-button @click="collapsed = !collapsed" text v-if="collapsed">
@@ -31,9 +31,7 @@ const route = useRoute();
             </n-button>
           </n-gi>
           <n-gi>
-            <div style="text-align: center">
-              {{ route.meta?.title ? t(route.meta?.title as string) : "" }}
-            </div>
+            <div style="text-align: center"></div>
           </n-gi>
           <n-gi> </n-gi>
         </n-grid>
