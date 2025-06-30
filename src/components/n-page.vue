@@ -41,7 +41,7 @@
       :columns="columns"
       :data="filteredData"
       :pagination="pagination"
-      :row-key="(row) => row.id"
+      :row-key="(row: any) => row.id"
       :loading="tableLoading"
     />
 
@@ -240,20 +240,20 @@ const getRecord = async (id: string) => {
 const editRecord = () => {
   instance
     .put(`${props.path}/update/${currentEditId.value}`, props.formData)
-    .then((res: any) => {
+    .then(() => {
       getRecord(props.formData.id);
       resetForm();
       message.success("更新成功");
     });
 };
 const deleteRecord = (id: string) => {
-  instance.delete(`${props.path}/delete/${id}`).then((res) => {
+  instance.delete(`${props.path}/delete/${id}`).then(() => {
     getAllRecords();
     message.success("删除成功");
   });
 };
 const createRecord = () => {
-  instance.post(`${props.path}/create`, props.formData).then((res: any) => {
+  instance.post(`${props.path}/create`, props.formData).then(() => {
     getAllRecords();
     message.success("添加成功");
   });

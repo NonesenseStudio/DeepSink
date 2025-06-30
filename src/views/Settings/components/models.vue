@@ -204,7 +204,11 @@ const formData = reactive({
         :rule="[{ required: true, message: t('key_message'), trigger: 'blur' }]"
         path="api_key"
       >
-        <n-input v-model:value="formData.api_key" />
+        <n-input
+          v-model:value="formData.api_key"
+          type="password"
+          show-password-on="click"
+        />
       </n-form-item>
       <n-form-item
         label="URL"

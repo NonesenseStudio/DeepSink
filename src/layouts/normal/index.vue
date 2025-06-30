@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { ViewSidebarOutlined } from "@vicons/material";
 import Sider from "@/layouts/normal/components/sider.vue";
-import { useI18n } from "vue-i18n";
 
 const collapsed = ref(false);
-const { t } = useI18n();
 const route = useRoute();
 </script>
 
@@ -18,18 +16,26 @@ const route = useRoute();
       content-style="padding: 10px;"
       bordered
     >
-      <sider v-model:collapsed="collapsed"></sider>
+      <sider v-model:collapsed="collapsed" v-show="!collapsed"></sider>
+      <n-button
+        @click="collapsed = false"
+        circle
+        ghost
+        :bordered="false"
+        v-if="collapsed"
+        style="position: absolute; top: 0; left: 0; transform: scaleX(-1)"
+      >
+        <template #icon>
+          <n-icon>
+            <ViewSidebarOutlined />
+          </n-icon>
+        </template>
+      </n-button>
     </n-layout-sider>
     <n-layout content-class="n-layout-right">
       <n-layout-header bordered v-if="route.path.includes('chat')">
         <n-grid x-gap="12" :cols="3">
-          <n-gi>
-            <n-button @click="collapsed = !collapsed" text v-if="collapsed">
-              <template #icon>
-                <ViewSidebarOutlined />
-              </template>
-            </n-button>
-          </n-gi>
+          <n-gi></n-gi>
           <n-gi>
             <div style="text-align: center"></div>
           </n-gi>

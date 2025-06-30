@@ -66,7 +66,13 @@ const options = computed(() => {
 <template>
   <div class="sider">
     <div class="sider-top">
-      <n-button @click="emits('update:collapsed', !collapsed)" text>
+      <n-button
+        circle
+        ghost
+        :bordered="false"
+        @click="emits('update:collapsed', !collapsed)"
+        style="transform: scaleX(-1)"
+      >
         <template #icon>
           <n-icon>
             <ViewSidebarOutlined />

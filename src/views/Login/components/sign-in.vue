@@ -50,7 +50,10 @@ const onLogin = () => {
       });
       localStorage.setItem("access_token", res.access_token);
       localStorage.setItem("refresh_token", res.refresh_token);
-      localStorage.setItem("expired_date", dayjs().add(7, "day").valueOf());
+      localStorage.setItem(
+        "expired_date",
+        dayjs().add(7, "day").valueOf().toString(),
+      );
       setTimeout(() => {
         router.replace("/chat");
         Message.success("登录成功");
