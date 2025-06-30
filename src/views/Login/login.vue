@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import SignIn from "@/views/Login/components/sign-in.vue";
 import SignUp from "@/views/Login/components/sign-up.vue";
+import { useModelStore } from "@/store";
+import { getCurrentModel, getModels } from "@/services/model.ts";
 
 const route = useRoute();
+const onLogin = async () => {
+  const modelStore = useModelStore();
+  modelStore.model = await getCurrentModel().then(({ data }) => data);
+  modelStore.modelList = await getModels();
+};
 </script>
 
 <template>
@@ -16,7 +23,7 @@ const route = useRoute();
         />
         <h1>Sink to the Deep</h1>
       </div>
-      <sign-in v-if="route.name === 'Login'" />
+      <sign-in v-if="route.name === 'Login'" @login="onLogin" />
       <sign-up v-else />
     </n-card>
   </div>

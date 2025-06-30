@@ -10,6 +10,7 @@ export const checkTokenGuard = async (
   const access_token = localStorage.getItem("access_token");
   const refresh_token = localStorage.getItem("refresh_token");
   const expired_date = localStorage.getItem("expired_date");
+
   if (parseInt(expired_date as string) - new Date().valueOf() <= 0) {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");

@@ -5,12 +5,15 @@ import {
   EditFilled,
   DeleteFilled,
   ContentCopyOutlined,
+  CheckCircleRound,
 } from "@vicons/material";
 import type { DataTableColumn } from "naive-ui";
 import { NSwitch, NButton } from "naive-ui";
 import dayjs from "dayjs";
 import { useClipboard } from "@vueuse/core";
 import { message as Message } from "@/utils";
+import { selectModel } from "@/services/model.ts";
+import { useModelStore } from "@/store/useModelStore";
 
 const { t } = useI18n({
   fallbackWarn: false,
@@ -44,6 +47,7 @@ const { t } = useI18n({
   },
 });
 const pageRef = ref();
+const modelStore = useModelStore();
 const columns = computed(() => {
   return [
     {
@@ -135,6 +139,19 @@ const columns = computed(() => {
       fixed: "right",
       render: (row: any) =>
         h("div", [
+          h(NButton, {
+            renderIcon: () => h(CheckCircleRound),
+            size: "small",
+            type: "success",
+            text: true,
+            disabled: (modelStore.model?.id as string) === row.id,
+            onClick: () => {
+              selectModel(row.id).then(() => {
+                Message.success("切换成功");
+              });
+            },
+            style: "margin-right: 8px;",
+          }),
           h(NButton, {
             renderIcon: () => h(EditFilled),
             size: "small",

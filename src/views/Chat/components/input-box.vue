@@ -8,6 +8,7 @@ import {
   ArrowUpwardFilled,
 } from "@vicons/material";
 import { message as Message } from "@/utils";
+import { useModelStore } from "@/store";
 
 const { t } = useI18n();
 const props = defineProps<{
@@ -16,13 +17,16 @@ const props = defineProps<{
 const emit = defineEmits(["update:question", "submit"]);
 const value = ref("");
 const isThink = ref(false);
-const options: any = [
-  {
-    label: "Drive My Car",
-    key: "Drive My Car",
-  },
-];
+const options = computed(() => {
+  return modelStore.modelList.map((item) => {
+    return {
+      label: item.model_name,
+      key: item.id,
+    };
+  });
+});
 
+const modelStore = useModelStore();
 const handleSelect = (key: string | number) => {
   value.value = key as string;
 };

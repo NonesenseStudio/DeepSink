@@ -13,6 +13,7 @@ const userInfo = reactive({
   username: "",
   password: "",
 });
+const emit = defineEmits(["login"]);
 const rules = {
   username: [
     {
@@ -54,11 +55,10 @@ const onLogin = () => {
         "expired_date",
         dayjs().add(7, "day").valueOf().toString(),
       );
-      setTimeout(() => {
-        router.replace("/chat");
-        Message.success("登录成功");
-        loadingBar.finish();
-      }, 3000);
+      emit("login");
+      router.replace("/chat");
+      Message.success("登录成功");
+      loadingBar.finish();
     })
     .catch(() => {
       loadingBar.error();
