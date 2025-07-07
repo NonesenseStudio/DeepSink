@@ -6,6 +6,13 @@ export default {
   edit: "编辑",
   delete: "删除",
   model: "模型",
+  rename: "重命名",
+  date:{
+    today: "今天",
+    yesterday: "昨天",
+    last7Days: "7天内",
+    last30Days: "30天内",
+  },
   chat: {
     language: "语言",
     modalTitle: "系统设置",

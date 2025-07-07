@@ -6,6 +6,13 @@ export default {
   edit: "Edit",
   delete: "Delete",
   model: "Model",
+  rename: "Rename",
+  date: {
+    today: "Today",
+    yesterday: "Yesterday",
+    last7Days: "7 Days",
+    last30Days: "30 Days",
+  },
   chat: {
     language: "Language",
     modalTitle: "System Settings",

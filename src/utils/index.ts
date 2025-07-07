@@ -2,6 +2,7 @@ import { createDiscreteApi, darkTheme } from "naive-ui";
 import { NIcon } from "naive-ui";
 import { useSettingsStore } from "@/store";
 import { useDark, usePreferredColorScheme } from "@vueuse/core";
+import type { HTMLAttributes } from "vue";
 
 const isDark = useDark();
 const preferredColor = usePreferredColorScheme();
@@ -37,10 +38,10 @@ export const toggleTheme = () => {
   loadingBar = newDiscrete.loadingBar;
   modal = newDiscrete.modal;
 };
-export const renderIcon = (icon: Component) => {
+export const renderIcon = (icon: Component, props?: HTMLAttributes) => {
   return () => {
     return h(NIcon, null, {
-      default: () => h(icon),
+      default: () => h(icon, props),
     });
   };
 };

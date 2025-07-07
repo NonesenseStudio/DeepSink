@@ -18,7 +18,7 @@ const emit = defineEmits(["update:question", "submit"]);
 const value = ref("");
 const isThink = ref(false);
 const options = computed(() => {
-  return modelStore.modelList.map((item) => {
+  return modelStore.modelList.map((item: any) => {
     return {
       label: item.model_name,
       key: item.id,
@@ -115,7 +115,7 @@ const handleEnter = (e: KeyboardEvent) => {
               </n-icon>
             </template>
           </n-button>
-          <n-popover trigger="click" :disabled="question">
+          <n-popover trigger="click" :disabled="!!question">
             请输入你的问题
             <template #trigger>
               <n-button

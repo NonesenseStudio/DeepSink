@@ -56,11 +56,11 @@ const columns = computed(() => {
     },
     {
       title: t("name"),
-      key: "model_name",
+      key: "modelName",
     },
     {
       title: "API Key",
-      key: "api_key",
+      key: "apiKey",
       align: "center",
       render: (row: any) =>
         h(NButton, {
@@ -69,7 +69,7 @@ const columns = computed(() => {
           text: true,
           onClick: () => {
             const { copy } = useClipboard();
-            copy(row.api_key).then(() => {
+            copy(row.apiKey).then(() => {
               Message.success("复制成功");
             });
           },
@@ -77,7 +77,7 @@ const columns = computed(() => {
     },
     {
       title: "URL",
-      key: "base_url",
+      key: "baseUrl",
     },
     {
       title: t("stream"),
@@ -126,9 +126,9 @@ const columns = computed(() => {
     },
     {
       title: t("created_time"),
-      key: "created_at",
+      key: "createdAt",
       render: (row: any) => {
-        return dayjs(row.created_at).format("YYYY-MM-DD HH:mm:ss");
+        return dayjs(row.createdAt).format("YYYY-MM-DD HH:mm:ss");
       },
     },
     {
@@ -173,9 +173,9 @@ const columns = computed(() => {
 });
 const formData = reactive({
   title: "",
-  model_name: "",
-  api_key: "",
-  base_url: "",
+  modelName: "",
+  apiKey: "",
+  baseUrl: "",
   stream: 1,
   disabled: 0,
   // model_version: "",
@@ -211,18 +211,18 @@ const formData = reactive({
         :rule="[
           { required: true, message: t('name_message'), trigger: 'blur' },
         ]"
-        path="model_name"
+        path="modelName"
       >
-        <n-input v-model:value="formData.model_name" />
+        <n-input v-model:value="formData.modelName" />
       </n-form-item>
 
       <n-form-item
         label="API Key"
         :rule="[{ required: true, message: t('key_message'), trigger: 'blur' }]"
-        path="api_key"
+        path="apiKey"
       >
         <n-input
-          v-model:value="formData.api_key"
+          v-model:value="formData.apiKey"
           type="password"
           show-password-on="click"
         />
@@ -230,9 +230,9 @@ const formData = reactive({
       <n-form-item
         label="URL"
         :rule="[{ required: true, message: t('url_message'), trigger: 'blur' }]"
-        path="base_url"
+        path="baseUrl"
       >
-        <n-input v-model:value="formData.base_url" />
+        <n-input v-model:value="formData.baseUrl" />
       </n-form-item>
       <!--      <n-form-item :label="t('model_version')">-->
       <!--        <n-input v-model:value="formData.model_version" />-->

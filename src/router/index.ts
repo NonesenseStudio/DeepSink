@@ -37,7 +37,13 @@ export const routes: Array<RouteRecordRaw> = [
       layout: "normal",
     },
     component: () => import("@/views/Chat/chat.vue"),
-    children: [],
+    children: [
+      {
+        path: ":id",
+        name: "Conversation",
+        component: () => import("@/views/Chat/chat.vue"),
+      },
+    ],
   },
   {
     path: "/settings",

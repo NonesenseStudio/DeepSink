@@ -13,24 +13,26 @@ const route = useRoute();
       collapse-mode="width"
       :collapsed-width="0"
       :width="240"
-      content-style="padding: 10px;"
+      content-style="overflow:hidden"
       bordered
     >
       <sider v-model:collapsed="collapsed" v-show="!collapsed"></sider>
-      <n-button
-        @click="collapsed = false"
-        circle
-        ghost
-        :bordered="false"
-        v-if="collapsed"
-        style="position: absolute; top: 0; left: 0; transform: scaleX(-1)"
-      >
-        <template #icon>
-          <n-icon>
-            <ViewSidebarOutlined />
-          </n-icon>
-        </template>
-      </n-button>
+      <n-space>
+        <n-button
+          @click="collapsed = false"
+          circle
+          ghost
+          :bordered="false"
+          v-if="collapsed"
+          style="position: absolute; top: 0; left: 0; transform: scaleX(-1)"
+        >
+          <template #icon>
+            <n-icon>
+              <ViewSidebarOutlined />
+            </n-icon>
+          </template>
+        </n-button>
+      </n-space>
     </n-layout-sider>
     <n-layout content-class="n-layout-right">
       <n-layout-header bordered v-if="route.path.includes('chat')">

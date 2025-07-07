@@ -7,13 +7,15 @@ import {
 } from "@vicons/material";
 import { renderIcon } from "@/utils";
 import { useI18n } from "vue-i18n";
-import { useUserStore } from "@/store";
+import { useUserStore, useChatStore } from "@/store";
 import { dialog, message as Message } from "@/utils";
 import { userLogout } from "@/services/user.ts";
+import Sessions from "@/views/Chat/components/sessions.vue";
 
 const { t } = useI18n();
 const router = useRouter();
 const useStore = useUserStore();
+const chatStore = useChatStore();
 defineProps<{
   collapsed: boolean;
 }>();
@@ -61,6 +63,11 @@ const options = computed(() => {
     },
   ];
 });
+
+const onNewChat = () => {
+  chatStore.currentSession = null;
+  router.push("/chat");
+};
 </script>
 
 <template>
@@ -79,16 +86,13 @@ const options = computed(() => {
           </n-icon>
         </template>
       </n-button>
-      <n-button
-        round
-        color="#dbeafe"
-        text-color="#4d6bfe"
-        @click="router.push('/chat')"
-      >
+      <n-button round color="#dbeafe" text-color="#4d6bfe" @click="onNewChat">
         <n-icon><PostAddRound /> </n-icon>开启新对话
       </n-button>
     </div>
-    <div class="sider-middle"></div>
+    <div class="sider-middle">
+      <sessions />
+    </div>
     <div class="sider-bottom">
       <n-dropdown trigger="click" :options="options" width="trigger">
         <n-button>点击！</n-button>
@@ -112,6 +116,7 @@ const options = computed(() => {
   &-middle {
     width: 100%;
     flex: 1;
+    overflow: hidden;
   }
   &-bottom {
     width: 100%;

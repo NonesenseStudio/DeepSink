@@ -94,7 +94,7 @@ const props = withDefaults(
     sortOrder?: "desc" | "asc";
   }>(),
   {
-    sortBy: "created_at",
+    sortBy: "createdAt",
     sortOrder: "desc",
   },
 );
