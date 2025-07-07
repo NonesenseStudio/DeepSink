@@ -14,7 +14,7 @@ dayjs.extend(isYesterday);
 const route = useRoute();
 const router = useRouter();
 const chatStore = useChatStore();
-const getOptions = (session?: any) => {
+const getOptions = () => {
   return [
     {
       label: t("rename"),
@@ -102,7 +102,7 @@ const goToChat = (item: any, e: any) => {
 };
 
 onMounted(() => {
-  chatStore.setCurrentSession(route.params?.id || null);
+  chatStore.setCurrentSession((route.params?.id as string) || "");
 });
 </script>
 
@@ -125,7 +125,7 @@ onMounted(() => {
           <template
             v-if="showMoreId === item.id || route.params.id === item.id"
           >
-            <n-dropdown trigger="click" :options="getOptions(item)">
+            <n-dropdown trigger="click" :options="getOptions">
               <n-button text :focusable="false">
                 <template #icon>
                   <n-icon>
