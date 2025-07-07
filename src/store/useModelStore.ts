@@ -2,7 +2,9 @@ import { defineStore } from "pinia";
 
 export const useModelStore = defineStore("model", {
   state: () => ({
-    model: "gpt-3.5-turbo",
+    model: {
+      id: "" as string,
+    },
     modelList: [] as any[],
   }),
   actions: {
