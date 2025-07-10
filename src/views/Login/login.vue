@@ -18,7 +18,7 @@ const { t, locale, messages } = useI18n({
     ...hellos,
   },
 });
-const languages = computed(() => {
+const languages: any = computed(() => {
   return Object.keys(messages.value);
 });
 const route = useRoute();
