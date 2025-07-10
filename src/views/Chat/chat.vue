@@ -4,15 +4,18 @@ import ToolBar from "@/views/Chat/components/tool-bar.vue";
 import {
   KeyboardArrowUpFilled,
   KeyboardArrowDownFilled,
+  ArrowDownwardFilled,
 } from "@vicons/material";
 import MarkdownIt from "markdown-it";
-import { onMessage } from "@/services/chat.ts";
+import { getMessages, onMessage } from "@/services/chat.ts";
 import { useChatStore } from "@/store";
 import logo from "@/assets/logo.png";
 
 const question = ref<string | null>("");
+const route = useRoute();
 const chatStore = useChatStore();
-const conversations = ref([
+const page = ref<number>(1);
+const conversations = ref<any[]>([
   {
     role: "user",
     content: "你好",
@@ -58,23 +61,33 @@ const md = MarkdownIt({
 });
 
 // const onReset = (e) => {};
-// const toBottom = () => {
-//   conversationRef.value.scrollTop =
-//     conversationRef.value.scrollHeight - conversationRef.value.offsetHeight;
-// };
-//
-// const onScroll = (e: any) => {
-//   showToBottom.value =
-//     e.target.scrollTop + e.target.offsetHeight < e.target.scrollHeight - 50;
-// };
+const scrollBottom = ref<number>(0);
+const toBottom = () => {
+  conversationRef.value.scrollTop =
+    conversationRef.value.scrollHeight - conversationRef.value.offsetHeight;
+};
+
+const onScroll = (e: any) => {
+  if (!chatStore.currentSession) return;
+  scrollBottom.value =
+    e.target.scrollHeight - e.target.offsetHeight - e.target.scrollTop;
+};
 const onSubmit = () => {
   if (question.value) {
+    const answer = reactive({
+      role: "assistant",
+      content: "",
+      reasoning_content: "",
+      hideReasoning: true,
+      finished: false,
+    });
     conversations.value.push({
       role: "user",
       content: question.value,
       reasoning_content: "",
       hideReasoning: true,
     });
+    conversations.value.push(answer);
     // toBottom();
     onMessage({
       sessionId: chatStore.currentSession,
@@ -86,18 +99,59 @@ const onSubmit = () => {
         content: res.message,
         reasoning_content: res.reasoning_content || "",
         hideReasoning: true,
+        finished: true,
       });
-      // toBottom();
+      if (!chatStore.currentSession) {
+        chatStore.setCurrentSession(res.sessionId);
+        chatStore.addSession({
+          sessionId: res.sessionId,
+          createdAt: new Date().valueOf(),
+          updatedAt: new Date().valueOf(),
+        });
+      }
+      toBottom();
     });
     question.value = null;
   }
 };
+watch(
+  () => route.params.id,
+  (val) => {
+    if (val) {
+      render();
+    } else {
+      conversations.value = [];
+    }
+  },
+);
+
+const render = async () => {
+  let messages = await getMessages(
+    chatStore.currentSession as string,
+    page.value,
+  );
+  conversations.value = messages.reverse();
+};
+onMounted(() => {
+  if (chatStore.currentSession) {
+    render();
+    scrollBottom.value =
+      conversationRef.value.scrollHeight -
+      conversationRef.value.offsetHeight -
+      conversationRef.value.scrollTop;
+    nextTick(() => {
+      setTimeout(() => {
+        toBottom();
+      }, 0);
+    });
+  }
+});
 </script>
 
 <template>
   <div class="chat">
-    <div class="chat-conversation" ref="conversationRef">
-      <n-space vertical style="width: 100%">
+    <div class="chat-conversation" ref="conversationRef" @scroll="onScroll">
+      <n-flex vertical style="width: 100%">
         <template v-for="item in conversations">
           <div class="chat-conversation-user" v-if="item.role === 'user'">
             <div class="chat-conversation-message">
@@ -109,6 +163,11 @@ const onSubmit = () => {
               <n-avatar round :src="logo" />
             </div>
             <div class="chat-conversation-assistant-content">
+              <div class="dots-container" v-if="false">
+                <div class="dot"></div>
+                <div class="dot second"></div>
+                <div class="dot third"></div>
+              </div>
               <n-button
                 text
                 :focusable="false"
@@ -137,7 +196,16 @@ const onSubmit = () => {
             </div>
           </div>
         </template>
-      </n-space>
+      </n-flex>
+    </div>
+    <div class="chat-to__bottom" v-if="scrollBottom >= 50">
+      <n-button circle type="tertiary" @click="toBottom">
+        <template #icon>
+          <n-icon>
+            <ArrowDownwardFilled />
+          </n-icon>
+        </template>
+      </n-button>
     </div>
     <input-box
       v-model:question="question"
@@ -163,10 +231,12 @@ const onSubmit = () => {
   &-conversation {
     flex: 1;
     width: 100%;
+    height: 100%;
     padding: 10px 15%;
     overflow: auto;
     box-sizing: border-box;
     transition: all ease-out 0.5s;
+    position: relative;
 
     &-user {
       width: 100%;
@@ -214,6 +284,49 @@ const onSubmit = () => {
       border-radius: 10px;
       font-size: 1rem;
       max-width: 70%;
+    }
+  }
+  &-to__bottom {
+    width: 100%;
+    padding: 0 15%;
+    height: 0;
+    position: relative;
+    .n-button {
+      position: absolute;
+      right: 15%;
+      bottom: 30px;
+      background-color: #fff;
+    }
+  }
+  .dots-container {
+    display: flex;
+    gap: 5px;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: colorWave 2s infinite linear;
+    background-color: #dadada;
+  }
+  .second {
+    animation-delay: 0.5s;
+  }
+  .third {
+    animation-delay: 1s;
+  }
+  @keyframes colorWave {
+    0%,
+    100% {
+      background-color: #dadada;
+    }
+    50% {
+      background-color: #fafafa;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    .n-button {
+      background-color: #18181c;
     }
   }
 }

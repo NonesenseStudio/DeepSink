@@ -71,7 +71,15 @@ axiosInstance.interceptors.response.use(
 
 const instance = {
   // 创建一个方法来发送请求
-  request: async (method: any, url: string, options = {}) => {
+  request: async (
+    method: any,
+    url: string,
+    options = {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+    },
+  ) => {
     try {
       // 发送请求
       const response = await axiosInstance({
@@ -91,6 +99,8 @@ const instance = {
     instance.request("put", url, { data, ...options }),
   delete: (url: string, options?: any) =>
     instance.request("delete", url, options),
+  patch: (url: string, data: any, options?: any) =>
+    instance.request("patch", url, { data, ...options }),
 };
 
 export default instance;

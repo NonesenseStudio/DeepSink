@@ -22,6 +22,12 @@ const themeOverrides: GlobalThemeOverrides = {
   common: {
     primaryColor: "#4d6bfe",
   },
+  Card: {
+    borderRadius: "20px",
+  },
+  Input: {
+    borderRadius: "20px",
+  },
 };
 
 const layouts = new Map();

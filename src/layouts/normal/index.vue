@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ViewSidebarOutlined } from "@vicons/material";
 import Sider from "@/layouts/normal/components/sider.vue";
+import { useChatStore } from "@/store";
 
 const collapsed = ref(false);
 const route = useRoute();
+const chatStore = useChatStore();
 </script>
 
 <template>
@@ -39,7 +41,7 @@ const route = useRoute();
         <n-grid x-gap="12" :cols="3">
           <n-gi></n-gi>
           <n-gi>
-            <div style="text-align: center"></div>
+            <div style="text-align: center">{{ chatStore.sessionTitle }}</div>
           </n-gi>
           <n-gi> </n-gi>
         </n-grid>
@@ -66,6 +68,11 @@ const route = useRoute();
   }
   :deep(.n-layout-right) {
     overflow: hidden;
+  }
+  @media (prefers-color-scheme: dark) {
+    .n-layout.header{
+      background: #101014;
+    }
   }
 }
 </style>

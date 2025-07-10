@@ -1,21 +1,13 @@
 import { defineStore } from "pinia";
 
-interface Message {
-  id: string;
-  text: string;
-  sender: string;
-}
 export const useChatStore = defineStore("chat", {
   state: () => ({
     currentSession: null as string | null,
     session: {},
     sessions: [] as any[],
-    messages: [] as Message[],
+    sessionTitle: "" as string,
   }),
   actions: {
-    addMessage(message: Message) {
-      this.messages.push(message);
-    },
     addSession(session: any) {
       this.sessions.push(session);
     },
@@ -27,8 +19,11 @@ export const useChatStore = defineStore("chat", {
     setCurrentSession(sessionId: string) {
       this.currentSession = sessionId;
     },
-    clearMessages() {
-      this.messages = [];
+    clearSessions() {
+      this.sessions = [];
+    },
+    setSessionTitle(title: string) {
+      this.sessionTitle = title;
     },
   },
 });

@@ -4,11 +4,11 @@ export const useModelStore = defineStore("model", {
   state: () => ({
     model: {
       id: "" as string,
-    },
+    } as any,
     modelList: [] as any[],
   }),
   actions: {
-    setModel(model: string) {
+    setModel(model: any) {
       this.model = model;
     },
     setModelList(modelList: any[]) {

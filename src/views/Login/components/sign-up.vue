@@ -4,7 +4,32 @@ import { useI18n } from "vue-i18n";
 import { userRegister } from "@/services/user.ts";
 import { message as Message } from "@/utils";
 
-const { t } = useI18n();
+const { t, locale } = useI18n({
+  messages: {
+    en: {
+      username_rule: "Please enter your username",
+      password_rule: "Please enter your password",
+      empty_info: "Please enter your username and password",
+      agreed_info: "Please read and agree to the Terms and Privacy",
+      agreed: "I'm already read and agree to the",
+      and: "and",
+      terms: "Terms",
+      privacy: "Privacy",
+      succeed: "Register Succeed",
+    },
+    zh: {
+      username_rule: "请输入用户名",
+      password_rule: "请输入密码",
+      empty_info: "请输入用户名和密码",
+      agreed_info: "请阅读并同意我们的用户协议和隐私政策",
+      agreed: "已阅读并同意我们的",
+      and: "与",
+      terms: "用户协议",
+      privacy: "隐私政策",
+      succeed: "注册成功",
+    },
+  },
+});
 const loading = ref<boolean>(false);
 const userInfo = reactive({
   username: "",
@@ -15,14 +40,14 @@ const rules = {
   username: [
     {
       required: true,
-      message: "请输入账号",
+      message: t("username_rule"),
       trigger: "blur",
     },
   ],
   password: [
     {
       required: true,
-      message: "请输入密码",
+      message: t("password_rule"),
       trigger: "blur",
     },
   ],
@@ -34,13 +59,18 @@ const onLogin = () => {
 const onRegister = () => {
   loading.value = true;
   if (!userInfo.username || !userInfo.password) {
-    Message.info("请输入用户名和密码");
+    Message.info(t("empty_info"));
+    loading.value = false;
+    return;
+  }
+  if (!agreed.value) {
+    Message.info(t("agreed_info"));
     loading.value = false;
     return;
   }
   userRegister(userInfo)
     .then(() => {
-      Message.success("注册成功");
+      Message.success(t("succeed"));
     })
     .finally(() => {
       loading.value = false;
@@ -74,12 +104,23 @@ const onRegister = () => {
       </n-input>
     </n-form-item>
     <n-form-item>
-      <n-checkbox v-model:checked="agreed">
-        已阅读并同意我们的
-        <a href="/terms.html" target="_blank">用户协议</a>
-        与
-        <a href="/privacy.html" target="_blank">隐私政策</a>
-      </n-checkbox>
+      <n-flex align="center" size="small" :wrap="false">
+        <n-checkbox v-model:checked="agreed"> </n-checkbox>
+        <div>
+          {{ t("agreed") }}
+          <a
+            :href="locale.includes('zh') ? '/terms.html' : '/terms_en.html'"
+            target="_blank"
+            >{{ t("terms") }}</a
+          >
+          {{ t("and") }}
+          <a
+            :href="locale.includes('zh') ? '/privacy.html' : '/privacy_en.html'"
+            target="_blank"
+            >{{ t("privacy") }}</a
+          >
+        </div>
+      </n-flex>
     </n-form-item>
     <n-form-item>
       <n-button

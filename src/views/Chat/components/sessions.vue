@@ -7,14 +7,41 @@ import isToday from "dayjs/plugin/isToday";
 import isYesterday from "dayjs/plugin/isYesterday";
 import { message as Message } from "@/utils";
 import { useChatStore } from "@/store";
+import {
+  deleteSession,
+  editTitle,
+  getSession,
+  getSessions,
+} from "@/services/session.ts";
 
-const { t } = useI18n();
+const { t } = useI18n({
+  messages: {
+    en: {
+      placeholder: "Please enter the title",
+      titleChangeSuccess: "Title change succeed",
+      titleChangeFail: "Title change failed",
+      deleteSuccess: "Delete succeed",
+      deleteFail: "Delete failed",
+    },
+    zh: {
+      placeholder: "请输入标题",
+      titleChangeSuccess: "标题修改成功",
+      titleChangeFail: "标题修改失败",
+      deleteSuccess: "删除成功",
+      deleteFail: "删除失败",
+    },
+  },
+});
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
 const route = useRoute();
 const router = useRouter();
 const chatStore = useChatStore();
-const getOptions = () => {
+const page = ref(1);
+const showModal = ref(false);
+const editId = ref<string>("");
+const title = ref("");
+const getOptions = (item: any) => {
   return [
     {
       label: t("rename"),
@@ -22,7 +49,9 @@ const getOptions = () => {
       icon: renderIcon(EditOutlined),
       props: {
         onClick: () => {
-          Message.success("编辑成功");
+          title.value = item.title;
+          editId.value = item.id;
+          showModal.value = true;
         },
       },
     },
@@ -30,46 +59,29 @@ const getOptions = () => {
       label: t("delete"),
       key: "delete",
       icon: renderIcon(DeleteOutlined, {
-        color: "red",
+        color: "#e16e77",
       }),
       props: {
         style: {
-          color: "red",
+          color: "#e16e77",
         },
         onClick: () => {
-          Message.success("删除成功");
+          deleteSession(item.id).then(() => {
+            chatStore.removeSession(item.id);
+            Message.success(t("deleteSuccess"));
+            router.replace("/chat");
+          });
         },
       },
     },
   ];
 };
 const showMoreId = ref("");
-const data = [
-  {
-    id: "1",
-    title: "这是一段非常长的文本，以至于都溢出了",
-    createdAt: "2025-11-11",
-    updatedAt: "2025-7-04",
-  },
-  {
-    id: "2",
-    title: "这是一段非常长的文本，以至于都溢出了",
-    createdAt: "2024-10-11",
-    updatedAt: "2024-10-11",
-  },
-  {
-    id: "3",
-    title: "这是一段非常长的文本，以至于都溢出了",
-    createdAt: "2024-10-11",
-    updatedAt: "2024-10-11",
-  },
-];
 const groupSessions = computed(() => {
   const groups: any = {};
-  data.forEach((msg) => {
+  chatStore.sessions.forEach((msg: any) => {
     const date = dayjs(msg.updatedAt);
     let groupKey: any;
-
     if (date.isToday()) groupKey = t("date.today");
     else if (date.isYesterday()) groupKey = t("date.yesterday");
     else if (dayjs().diff(date, "day") <= 7) groupKey = t("date.last7Days");
@@ -81,7 +93,7 @@ const groupSessions = computed(() => {
   });
   Object.keys(groups).forEach((key) => {
     groups[key].sort(
-      (a: any, b: any) => dayjs(b.timestamp).unix() - dayjs(a.timestamp).unix(),
+      (a: any, b: any) => dayjs(b.updatedAt).unix() - dayjs(a.updatedAt).unix(),
     );
   });
   return groups;
@@ -97,12 +109,41 @@ const onMouseenter = (item: any) => {
 const goToChat = (item: any, e: any) => {
   if (route.params.id === item.id || e.target.nodeName === "svg") return;
   chatStore.setCurrentSession(item.id);
+  chatStore.setSessionTitle(item.title);
   router.push("/chat/" + item.id);
   showMoreId.value = item.id;
 };
+const changeTitle = () => {
+  if (!editId.value) return;
+  editTitle(editId.value, chatStore.sessionTitle)
+    .then(() => {
+      // sessions.values.find((item) => item.id === editId.value)?.title =
+      chatStore.sessionTitle = title.value;
+      Message.success(t("titleChangeSuccess"));
+      showModal.value = false;
+    })
+    .catch(() => {
+      Message.error(t("titleChangeFail"));
+    });
+};
 
-onMounted(() => {
+const render = () => {
+  getSessions(page.value).then((res: any[]) => {
+    chatStore.sessions.push(...res);
+  });
+};
+
+onMounted(async () => {
   chatStore.setCurrentSession((route.params?.id as string) || "");
+  if (route.params?.id) {
+    chatStore.sessionTitle = await getSession(route.params.id as string).then(
+      ({ title }) => title,
+    );
+  }
+  render();
+});
+onBeforeUnmount(() => {
+  chatStore.clearSessions();
 });
 </script>
 
@@ -120,13 +161,13 @@ onMounted(() => {
           v-for="item in group"
         >
           <div class="sessions-list-item__content">
-            这是一串非常长的文本，以至于它都溢出了
+            {{ item.title }}
           </div>
           <template
             v-if="showMoreId === item.id || route.params.id === item.id"
           >
-            <n-dropdown trigger="click" :options="getOptions">
-              <n-button text :focusable="false">
+            <n-dropdown trigger="click" :options="getOptions(item)">
+              <n-button circle size="tiny" :bordered="false" :focusable="false">
                 <template #icon>
                   <n-icon>
                     <MoreVertFilled />
@@ -138,6 +179,30 @@ onMounted(() => {
       </ul>
     </div>
   </n-space>
+  <n-modal
+    v-model:show="showModal"
+    style="width: 600px"
+    :title="t('edit')"
+    :bordered="false"
+    preset="card"
+    size="huge"
+    role="dialog"
+    aria-modal="true"
+  >
+    <template #footer>
+      <n-flex justify="flex-end">
+        <n-button @click="showModal = false">
+          {{ t("cancel") }}
+        </n-button>
+        <n-button type="primary" @click="changeTitle">
+          {{ t("confirm") }}
+        </n-button>
+      </n-flex>
+    </template>
+    <n-form-item :label="t('title')" label-placement="left">
+      <n-input v-model:value="title" :placeholder="t('placeholder')" />
+    </n-form-item>
+  </n-modal>
 </template>
 
 <style scoped lang="less">
@@ -174,7 +239,15 @@ onMounted(() => {
       &:hover {
         background-color: #f5f5f5;
       }
+      @media (prefers-color-scheme: dark) {
+        &.active {
+          background-color: #333338; /* 深色模式下的背景色 */
+        }
 
+        &:hover {
+          background-color: #333338; /* 深色模式下的背景色 */
+        }
+      }
       &__content {
         width: 100%;
         white-space: nowrap;

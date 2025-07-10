@@ -1,5 +1,5 @@
 export default {
-  hello: "Hello world",
+  hello: "Hello",
   operation: "Operation",
   created_time: "Created Time",
   add: "Add",
@@ -7,6 +7,9 @@ export default {
   delete: "Delete",
   model: "Model",
   rename: "Rename",
+  title: "Title",
+  cancel: "Cancel",
+  confirm: "Confirm",
   date: {
     today: "Today",
     yesterday: "Yesterday",
@@ -25,7 +28,7 @@ export default {
   },
   sign_in: {
     title: "Sign In",
-    account_placeholder: "Enter Email or Phone",
+    account_placeholder: "Enter Username",
     password_placeholder: "Enter Password",
     button: "Sign In",
     remember: "Remember me",

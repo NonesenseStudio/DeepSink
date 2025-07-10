@@ -45,6 +45,111 @@ img {
   font-style: normal;
 }
 
-li {
-  list-style-position: inside;
+.chat-conversation-content {
+  /* 标题样式 */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+    color: #111;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+  h2 {
+    font-size: 1.75em;
+  }
+  h3 {
+    font-size: 1.5em;
+  }
+  h4 {
+    font-size: 1.25em;
+  }
+  h5 {
+    font-size: 1em;
+  }
+  h6 {
+    font-size: 0.875em;
+  }
+  /* 列表样式 */
+  ul,
+  ol {
+    margin-top: 0;
+    margin-bottom: 1em;
+    padding-left: 1.5em;
+  }
+
+  li {
+    list-style-position: inside;
+    margin-bottom: 0.5em;
+  }
+  /* 段落样式 */
+  p {
+    display: inline-block;
+    margin-top: 0;
+    margin-bottom: 1em;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  /* 代码块样式 */
+  pre {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 1em;
+    overflow-x: auto;
+  }
+
+  code {
+    font-family: "Courier New", monospace;
+    font-size: 0.9em;
+  }
+
+  /* 引用样式 */
+  blockquote {
+    margin: 0;
+    padding: 0 1em;
+    color: #777;
+    border-left: 0.25em solid #ddd;
+  }
+
+  /* 水平线样式 */
+  hr {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 1em 0;
+  }
+
+  /* 表格样式 */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+  }
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f4f4f4;
+  }
+
+  /* 图片样式 */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1em 0;
+  }
 }

@@ -1,5 +1,5 @@
 export default {
-  hello: "你好，世界",
+  hello: "你好",
   operation: "操作",
   created_time: "创建时间",
   add: "添加",
@@ -7,7 +7,10 @@ export default {
   delete: "删除",
   model: "模型",
   rename: "重命名",
-  date:{
+  title: "标题",
+  cancel: "取消",
+  confirm: "确定",
+  date: {
     today: "今天",
     yesterday: "昨天",
     last7Days: "7天内",
@@ -23,7 +26,7 @@ export default {
   },
   sign_in: {
     title: "登录",
-    account_placeholder: "请输入手机号/邮箱地址",
+    account_placeholder: "请输入用户名",
     password_placeholder: "请输入密码",
     sign_in: "登录",
     signup: "注册",

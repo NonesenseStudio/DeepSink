@@ -66,6 +66,7 @@ const options = computed(() => {
 
 const onNewChat = () => {
   chatStore.currentSession = null;
+  chatStore.sessionTitle = "";
   router.push("/chat");
 };
 </script>
